@@ -1,0 +1,436 @@
+{
+  "memory_log": [
+    {
+      "timestamp": 1754989643.2606425,
+      "stage": "INIT",
+      "details": "Starting batch size testing",
+      "cpu_memory_mb": 510.8515625,
+      "gpu_allocated_mb": 0.0,
+      "gpu_cached_mb": 0.0,
+      "gpu_reserved_mb": 0.0
+    },
+    {
+      "timestamp": 1754989643.7755036,
+      "stage": "MODEL_CREATED",
+      "details": "Model architecture created",
+      "cpu_memory_mb": 914.78515625,
+      "gpu_allocated_mb": 0.0,
+      "gpu_cached_mb": 0.0,
+      "gpu_reserved_mb": 0.0
+    },
+    {
+      "timestamp": 1754989644.3275952,
+      "stage": "MODEL_LOADED",
+      "details": "Model weights loaded and moved to GPU",
+      "cpu_memory_mb": 1415.46875,
+      "gpu_allocated_mb": 210.05908203125,
+      "gpu_cached_mb": 398.0,
+      "gpu_reserved_mb": 398.0
+    },
+    {
+      "timestamp": 1754989644.4230385,
+      "stage": "BATCH_START",
+      "details": "Batch size 1 - cleared cache",
+      "cpu_memory_mb": 1415.65234375,
+      "gpu_allocated_mb": 210.05908203125,
+      "gpu_cached_mb": 272.0,
+      "gpu_reserved_mb": 272.0
+    },
+    {
+      "timestamp": 1754989644.4240375,
+      "stage": "BATCH_DATA",
+      "details": "Created synthetic batch data",
+      "cpu_memory_mb": 1417.3984375,
+      "gpu_allocated_mb": 210.1552734375,
+      "gpu_cached_mb": 272.0,
+      "gpu_reserved_mb": 272.0
+    },
+    {
+      "timestamp": 1754989644.4270377,
+      "stage": "BATCH_PREPARED",
+      "details": "Prepared model inputs",
+      "cpu_memory_mb": 1424.13671875,
+      "gpu_allocated_mb": 210.2177734375,
+      "gpu_cached_mb": 272.0,
+      "gpu_reserved_mb": 272.0
+    },
+    {
+      "timestamp": 1754989644.642206,
+      "stage": "BATCH_START",
+      "details": "Batch size 2 - cleared cache",
+      "cpu_memory_mb": 1462.20703125,
+      "gpu_allocated_mb": 210.21826171875,
+      "gpu_cached_mb": 272.0,
+      "gpu_reserved_mb": 272.0
+    },
+    {
+      "timestamp": 1754989644.642206,
+      "stage": "BATCH_DATA",
+      "details": "Created synthetic batch data",
+      "cpu_memory_mb": 1462.20703125,
+      "gpu_allocated_mb": 210.41064453125,
+      "gpu_cached_mb": 272.0,
+      "gpu_reserved_mb": 272.0
+    },
+    {
+      "timestamp": 1754989644.642206,
+      "stage": "BATCH_PREPARED",
+      "details": "Prepared model inputs",
+      "cpu_memory_mb": 1462.20703125,
+      "gpu_allocated_mb": 210.470703125,
+      "gpu_cached_mb": 272.0,
+      "gpu_reserved_mb": 272.0
+    },
+    {
+      "timestamp": 1754989644.8119802,
+      "stage": "BATCH_START",
+      "details": "Batch size 4 - cleared cache",
+      "cpu_memory_mb": 1462.28515625,
+      "gpu_allocated_mb": 210.376953125,
+      "gpu_cached_mb": 272.0,
+      "gpu_reserved_mb": 272.0
+    },
+    {
+      "timestamp": 1754989644.824215,
+      "stage": "BATCH_DATA",
+      "details": "Created synthetic batch data",
+      "cpu_memory_mb": 1462.28515625,
+      "gpu_allocated_mb": 210.76171875,
+      "gpu_cached_mb": 272.0,
+      "gpu_reserved_mb": 272.0
+    },
+    {
+      "timestamp": 1754989644.8251467,
+      "stage": "BATCH_PREPARED",
+      "details": "Prepared model inputs",
+      "cpu_memory_mb": 1462.28515625,
+      "gpu_allocated_mb": 210.8818359375,
+      "gpu_cached_mb": 272.0,
+      "gpu_reserved_mb": 272.0
+    },
+    {
+      "timestamp": 1754989644.9764113,
+      "stage": "BATCH_START",
+      "details": "Batch size 8 - cleared cache",
+      "cpu_memory_mb": 1462.28515625,
+      "gpu_allocated_mb": 210.6943359375,
+      "gpu_cached_mb": 272.0,
+      "gpu_reserved_mb": 272.0
+    },
+    {
+      "timestamp": 1754989644.9764113,
+      "stage": "BATCH_DATA",
+      "details": "Created synthetic batch data",
+      "cpu_memory_mb": 1462.28515625,
+      "gpu_allocated_mb": 211.4638671875,
+      "gpu_cached_mb": 272.0,
+      "gpu_reserved_mb": 272.0
+    },
+    {
+      "timestamp": 1754989644.9764113,
+      "stage": "BATCH_PREPARED",
+      "details": "Prepared model inputs",
+      "cpu_memory_mb": 1462.28515625,
+      "gpu_allocated_mb": 211.7041015625,
+      "gpu_cached_mb": 272.0,
+      "gpu_reserved_mb": 272.0
+    },
+    {
+      "timestamp": 1754989645.1444209,
+      "stage": "BATCH_START",
+      "details": "Batch size 16 - cleared cache",
+      "cpu_memory_mb": 1462.28515625,
+      "gpu_allocated_mb": 211.3291015625,
+      "gpu_cached_mb": 272.0,
+      "gpu_reserved_mb": 272.0
+    },
+    {
+      "timestamp": 1754989645.1444209,
+      "stage": "BATCH_DATA",
+      "details": "Created synthetic batch data",
+      "cpu_memory_mb": 1462.28515625,
+      "gpu_allocated_mb": 212.8681640625,
+      "gpu_cached_mb": 272.0,
+      "gpu_reserved_mb": 272.0
+    },
+    {
+      "timestamp": 1754989645.1593215,
+      "stage": "BATCH_PREPARED",
+      "details": "Prepared model inputs",
+      "cpu_memory_mb": 1462.28515625,
+      "gpu_allocated_mb": 213.3486328125,
+      "gpu_cached_mb": 272.0,
+      "gpu_reserved_mb": 272.0
+    },
+    {
+      "timestamp": 1754989645.35924,
+      "stage": "BATCH_START",
+      "details": "Batch size 32 - cleared cache",
+      "cpu_memory_mb": 1462.28515625,
+      "gpu_allocated_mb": 212.5986328125,
+      "gpu_cached_mb": 272.0,
+      "gpu_reserved_mb": 272.0
+    },
+    {
+      "timestamp": 1754989645.35924,
+      "stage": "BATCH_DATA",
+      "details": "Created synthetic batch data",
+      "cpu_memory_mb": 1462.28515625,
+      "gpu_allocated_mb": 215.6767578125,
+      "gpu_cached_mb": 272.0,
+      "gpu_reserved_mb": 272.0
+    },
+    {
+      "timestamp": 1754989645.35924,
+      "stage": "BATCH_PREPARED",
+      "details": "Prepared model inputs",
+      "cpu_memory_mb": 1462.28515625,
+      "gpu_allocated_mb": 217.3564453125,
+      "gpu_cached_mb": 272.0,
+      "gpu_reserved_mb": 272.0
+    },
+    {
+      "timestamp": 1754989645.5978143,
+      "stage": "AUDIO_START",
+      "details": "Loading audio",
+      "cpu_memory_mb": 708.2890625,
+      "gpu_allocated_mb": 0.0,
+      "gpu_cached_mb": 16.0,
+      "gpu_reserved_mb": 16.0
+    },
+    {
+      "timestamp": 1754989648.1003618,
+      "stage": "AUDIO_LOADED",
+      "details": "Audio: (10669, 80)",
+      "cpu_memory_mb": 764.6953125,
+      "gpu_allocated_mb": 0.0,
+      "gpu_cached_mb": 16.0,
+      "gpu_reserved_mb": 16.0
+    },
+    {
+      "timestamp": 1754989648.1003618,
+      "stage": "DETECTOR_START",
+      "details": "Loading face detector",
+      "cpu_memory_mb": 764.734375,
+      "gpu_allocated_mb": 0.0,
+      "gpu_cached_mb": 16.0,
+      "gpu_reserved_mb": 16.0
+    },
+    {
+      "timestamp": 1754989648.253441,
+      "stage": "DETECTOR_LOADED",
+      "details": "Face detector loaded",
+      "cpu_memory_mb": 933.2734375,
+      "gpu_allocated_mb": 86.43115234375,
+      "gpu_cached_mb": 94.0,
+      "gpu_reserved_mb": 94.0
+    },
+    {
+      "timestamp": 1754989648.2978265,
+      "stage": "FRAME_LOADED",
+      "details": "Frame 0",
+      "cpu_memory_mb": 1049.5546875,
+      "gpu_allocated_mb": 86.43115234375,
+      "gpu_cached_mb": 94.0,
+      "gpu_reserved_mb": 94.0
+    },
+    {
+      "timestamp": 1754989650.3165312,
+      "stage": "FACE_DETECTED",
+      "details": "Frame 0 - face detection",
+      "cpu_memory_mb": 1331.90625,
+      "gpu_allocated_mb": 86.43115234375,
+      "gpu_cached_mb": 616.0,
+      "gpu_reserved_mb": 616.0
+    },
+    {
+      "timestamp": 1754989650.3165312,
+      "stage": "TENSORS_CREATED",
+      "details": "Frame 0 - tensors on GPU",
+      "cpu_memory_mb": 1332.39453125,
+      "gpu_allocated_mb": 86.62353515625,
+      "gpu_cached_mb": 616.0,
+      "gpu_reserved_mb": 616.0
+    },
+    {
+      "timestamp": 1754989650.451443,
+      "stage": "FRAME_LOADED",
+      "details": "Frame 1",
+      "cpu_memory_mb": 1343.9765625,
+      "gpu_allocated_mb": 86.43115234375,
+      "gpu_cached_mb": 94.0,
+      "gpu_reserved_mb": 94.0
+    },
+    {
+      "timestamp": 1754989650.6033597,
+      "stage": "FACE_DETECTED",
+      "details": "Frame 1 - face detection",
+      "cpu_memory_mb": 1335.140625,
+      "gpu_allocated_mb": 86.43115234375,
+      "gpu_cached_mb": 1670.0,
+      "gpu_reserved_mb": 1670.0
+    },
+    {
+      "timestamp": 1754989650.6033597,
+      "stage": "TENSORS_CREATED",
+      "details": "Frame 1 - tensors on GPU",
+      "cpu_memory_mb": 1329.56640625,
+      "gpu_allocated_mb": 86.62353515625,
+      "gpu_cached_mb": 1670.0,
+      "gpu_reserved_mb": 1670.0
+    },
+    {
+      "timestamp": 1754989650.7349093,
+      "stage": "FRAME_LOADED",
+      "details": "Frame 2",
+      "cpu_memory_mb": 1335.55078125,
+      "gpu_allocated_mb": 86.43115234375,
+      "gpu_cached_mb": 94.0,
+      "gpu_reserved_mb": 94.0
+    },
+    {
+      "timestamp": 1754989650.8738594,
+      "stage": "FACE_DETECTED",
+      "details": "Frame 2 - face detection",
+      "cpu_memory_mb": 1359.30078125,
+      "gpu_allocated_mb": 86.43115234375,
+      "gpu_cached_mb": 1670.0,
+      "gpu_reserved_mb": 1670.0
+    },
+    {
+      "timestamp": 1754989650.8768678,
+      "stage": "TENSORS_CREATED",
+      "details": "Frame 2 - tensors on GPU",
+      "cpu_memory_mb": 1353.3671875,
+      "gpu_allocated_mb": 86.62353515625,
+      "gpu_cached_mb": 1670.0,
+      "gpu_reserved_mb": 1670.0
+    },
+    {
+      "timestamp": 1754989651.0276783,
+      "stage": "FRAME_LOADED",
+      "details": "Frame 3",
+      "cpu_memory_mb": 1363.3984375,
+      "gpu_allocated_mb": 86.43115234375,
+      "gpu_cached_mb": 94.0,
+      "gpu_reserved_mb": 94.0
+    },
+    {
+      "timestamp": 1754989651.193207,
+      "stage": "FACE_DETECTED",
+      "details": "Frame 3 - face detection",
+      "cpu_memory_mb": 1339.6484375,
+      "gpu_allocated_mb": 86.43115234375,
+      "gpu_cached_mb": 1670.0,
+      "gpu_reserved_mb": 1670.0
+    },
+    {
+      "timestamp": 1754989651.193207,
+      "stage": "TENSORS_CREATED",
+      "details": "Frame 3 - tensors on GPU",
+      "cpu_memory_mb": 1333.83984375,
+      "gpu_allocated_mb": 86.62353515625,
+      "gpu_cached_mb": 1670.0,
+      "gpu_reserved_mb": 1670.0
+    },
+    {
+      "timestamp": 1754989651.3267112,
+      "stage": "FRAME_LOADED",
+      "details": "Frame 4",
+      "cpu_memory_mb": 1340.91015625,
+      "gpu_allocated_mb": 86.43115234375,
+      "gpu_cached_mb": 94.0,
+      "gpu_reserved_mb": 94.0
+    },
+    {
+      "timestamp": 1754989651.4702392,
+      "stage": "FACE_DETECTED",
+      "details": "Frame 4 - face detection",
+      "cpu_memory_mb": 1364.66015625,
+      "gpu_allocated_mb": 86.43115234375,
+      "gpu_cached_mb": 1670.0,
+      "gpu_reserved_mb": 1670.0
+    },
+    {
+      "timestamp": 1754989651.4702392,
+      "stage": "TENSORS_CREATED",
+      "details": "Frame 4 - tensors on GPU",
+      "cpu_memory_mb": 1358.7265625,
+      "gpu_allocated_mb": 86.62353515625,
+      "gpu_cached_mb": 1670.0,
+      "gpu_reserved_mb": 1670.0
+    }
+  ],
+  "batch_results": [
+    {
+      "batch_size": 1,
+      "gpu_total_mb": 0,
+      "gpu_per_sample_mb": 0,
+      "success": false,
+      "error": "expected Tensor as element 1 in argument 0, but got NoneType"
+    },
+    {
+      "batch_size": 2,
+      "gpu_total_mb": 0,
+      "gpu_per_sample_mb": 0,
+      "success": false,
+      "error": "expected Tensor as element 1 in argument 0, but got NoneType"
+    },
+    {
+      "batch_size": 4,
+      "gpu_total_mb": 0,
+      "gpu_per_sample_mb": 0,
+      "success": false,
+      "error": "expected Tensor as element 1 in argument 0, but got NoneType"
+    },
+    {
+      "batch_size": 8,
+      "gpu_total_mb": 0,
+      "gpu_per_sample_mb": 0,
+      "success": false,
+      "error": "expected Tensor as element 1 in argument 0, but got NoneType"
+    },
+    {
+      "batch_size": 16,
+      "gpu_total_mb": 0,
+      "gpu_per_sample_mb": 0,
+      "success": false,
+      "error": "expected Tensor as element 1 in argument 0, but got NoneType"
+    },
+    {
+      "batch_size": 32,
+      "gpu_total_mb": 0,
+      "gpu_per_sample_mb": 0,
+      "success": false,
+      "error": "expected Tensor as element 1 in argument 0, but got NoneType"
+    }
+  ],
+  "frame_memories": [
+    {
+      "frame": 0,
+      "cpu": 1332.39453125,
+      "gpu": 86.43115234375
+    },
+    {
+      "frame": 1,
+      "cpu": 1329.56640625,
+      "gpu": 86.43115234375
+    },
+    {
+      "frame": 2,
+      "cpu": 1353.3671875,
+      "gpu": 86.43115234375
+    },
+    {
+      "frame": 3,
+      "cpu": 1333.83984375,
+      "gpu": 86.43115234375
+    },
+    {
+      "frame": 4,
+      "cpu": 1358.7265625,
+      "gpu": 86.43115234375
+    }
+  ],
+  "model_memory_mb": 204.77034759521484
+}
