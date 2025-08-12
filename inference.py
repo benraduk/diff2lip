@@ -85,6 +85,7 @@ class ConfigurableDiff2LipProcessor:
         self.model = None
         self.diffusion = None
         self.detector = None
+        self.sr_processor = None  # Phase 2.2: Super-Resolution processor
         self.args = self._create_args_from_config()
         self._initialize_models()
     
@@ -255,6 +256,12 @@ class ConfigurableDiff2LipProcessor:
         args.mask_shape = quality_config.get('mask_shape', 'ellipse')
         args.ellipse_aspect_ratio = quality_config.get('ellipse_aspect_ratio', 1.5)
         
+        # Phase 2.2: Super-Resolution parameters
+        args.super_resolution = quality_config.get('super_resolution', False)
+        args.sr_scale = quality_config.get('sr_scale', 2)
+        args.sr_model = quality_config.get('sr_model', 'RealESRGAN_x2plus')
+        args.selective_sr = quality_config.get('selective_sr', True)
+        
         return args
     
     def _initialize_models(self):
@@ -299,6 +306,21 @@ class ConfigurableDiff2LipProcessor:
             flip_input=False, 
             device='cuda' if torch.cuda.is_available() else 'cpu'
         )
+        
+        # Initialize super-resolution processor if enabled - Phase 2.2
+        if self.args.super_resolution:
+            try:
+                from super_resolution import LipSuperResolver
+                self.sr_processor = LipSuperResolver(
+                    scale=self.args.sr_scale,
+                    model_name=self.args.sr_model,
+                    device=self.device.type
+                )
+                print(f"✅ Super-Resolution processor initialized ({self.args.sr_scale}x)")
+            except Exception as e:
+                print(f"⚠️  Failed to initialize super-resolution: {e}")
+                print(f"🔄 Super-resolution will be disabled")
+                self.args.super_resolution = False
         
         print("✅ Models loaded and optimized successfully!")
     
@@ -478,8 +500,29 @@ class ConfigurableDiff2LipProcessor:
                             self.args.sharpening_strength
                         )
                     
-                    # Resize and place back
-                    generated_face_resized = cv2.resize(generated_face, (x2-x1, y2-y1))
+                    # Apply super-resolution if enabled - Phase 2.2
+                    if self.args.super_resolution and self.sr_processor is not None:
+                        try:
+                            # Get the mask for selective enhancement
+                            face_mask = mask[batch_idx].squeeze().cpu().numpy() if self.args.selective_sr else None
+                            
+                            # Apply super-resolution
+                            generated_face = self.sr_processor.enhance_lip_region(
+                                generated_face, 
+                                face_mask, 
+                                selective_enhancement=self.args.selective_sr
+                            )
+                            
+                            # Ensure proper data type and range
+                            if generated_face.dtype != np.uint8:
+                                generated_face = np.clip(generated_face, 0, 255).astype(np.uint8)
+                            
+                        except Exception as e:
+                            print(f"⚠️  Super-resolution failed for frame: {e}")
+                    
+                    # Resize and place back (account for super-resolution scaling)
+                    target_size = (x2-x1, y2-y1)
+                    generated_face_resized = cv2.resize(generated_face, target_size)
                     
                     result_frames[orig_idx] = frames_batch[orig_idx].copy()
                     result_frames[orig_idx][y1:y2, x1:x2] = generated_face_resized

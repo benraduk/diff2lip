@@ -1,0 +1,60 @@
+# Test Phase 2.2: Super-Resolution Enhancement
+model:
+  checkpoint_path: 'checkpoints/checkpoint.pt'
+  image_size: 128
+  num_channels: 128
+  num_res_blocks: 2
+  num_heads: 4
+  num_head_channels: 64
+  attention_resolutions: '32,16,8'
+  use_fp16: true
+  learn_sigma: true
+
+quality:
+  preset: 'high'                     # High quality preset (ddim50)
+  face_hide_percentage: 0.4          # 40% face hiding (user preference)
+  
+  # Phase 1.1: Enhanced Masking & Blending (disabled)
+  use_gradient_mask: false
+  blur_kernel_size: 15
+  
+  # Phase 1.4: Circular/Elliptical Masking (enabled)
+  use_circular_mask: true            # Enable circular/elliptical masking
+  mask_shape: 'ellipse'              # Elliptical mask shape
+  ellipse_aspect_ratio: 1.5          # Wide ellipse
+  
+  # Phase 1.3: Post-Processing Sharpening
+  sharpening_strength: 0.3           # Moderate detail enhancement
+  
+  # Phase 2.2: Super-Resolution Enhancement (enabled)
+  super_resolution: true             # Apply super-resolution to lip regions
+  sr_scale: 2                        # 2x super-resolution (128x128 -> 256x256)
+  sr_model: 'RealESRGAN_x2plus'      # Model variant (fallback to PyTorch if unavailable)
+  selective_sr: true                 # Only enhance lip regions (more efficient)
+  
+processing:
+  batch_size: 2                      # Reduced for super-resolution memory requirements
+  use_ddim: true
+  face_det_batch_size: 32            # Reduced for super-resolution
+  pads: [0, 0, 0, 0]
+  video_fps: 25
+  sample_rate: 16000
+  syncnet_mel_step_size: 16
+
+audio:
+  enhanced_processing: false
+  num_mels: 80
+  n_fft: 800
+  hop_size: 200
+
+optimization:
+  enable_cuda_optimizations: true
+  torch_compile: false               # Disabled for stability with super-resolution
+  memory_cleanup_interval: 2         # More frequent cleanup for super-resolution
+  gpu_memory_monitoring: true
+
+paths:
+  input_video: 'test_media/person_short.mp4'
+  input_audio: 'test_media/speech_short.wav'
+  output_video: 'output_dir/test_super_resolution_2x.mp4'
+  temp_dir: 'temp'
