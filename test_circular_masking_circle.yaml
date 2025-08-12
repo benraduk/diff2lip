@@ -1,0 +1,54 @@
+# Test Phase 1.4: Pure Circular Masking
+model:
+  checkpoint_path: 'checkpoints/checkpoint.pt'
+  image_size: 128
+  num_channels: 128
+  num_res_blocks: 2
+  num_heads: 4
+  num_head_channels: 64
+  attention_resolutions: '32,16,8'
+  use_fp16: true
+  learn_sigma: true
+
+quality:
+  preset: 'high'                     # High quality preset (ddim50)
+  face_hide_percentage: 0.5          # Standard 50% face hiding
+  
+  # Phase 1.1: Enhanced Masking & Blending (disabled)
+  use_gradient_mask: false
+  blur_kernel_size: 15
+  
+  # Phase 1.4: Circular/Elliptical Masking (enabled)
+  use_circular_mask: true            # Enable circular/elliptical masking
+  mask_shape: 'circle'               # Perfect circle
+  ellipse_aspect_ratio: 1.0          # Not used for circles, but set to 1.0
+  
+  # Phase 1.3: Post-Processing Sharpening
+  sharpening_strength: 0.3           # Moderate detail enhancement
+  
+processing:
+  batch_size: 4
+  use_ddim: true
+  face_det_batch_size: 64
+  pads: [0, 0, 0, 0]
+  video_fps: 25
+  sample_rate: 16000
+  syncnet_mel_step_size: 16
+
+audio:
+  enhanced_processing: false
+  num_mels: 80
+  n_fft: 800
+  hop_size: 200
+
+optimization:
+  enable_cuda_optimizations: true
+  torch_compile: false
+  memory_cleanup_interval: 5
+  gpu_memory_monitoring: true
+
+paths:
+  input_video: 'test_media/person_short.mp4'
+  input_audio: 'test_media/speech.m4a'
+  output_video: 'output_dir/test_circular_masking.mp4'
+  temp_dir: 'temp'

@@ -1,0 +1,45 @@
+# Test gradient masking with smaller blur size
+model:
+  checkpoint_path: 'checkpoints/checkpoint.pt'
+  image_size: 128
+  num_channels: 128
+  num_res_blocks: 2
+  num_heads: 4
+  num_head_channels: 64
+  attention_resolutions: '32,16,8'
+  use_fp16: true
+  learn_sigma: true
+
+quality:
+  preset: 'fast'  
+  face_hide_percentage: 0.5  
+  use_gradient_mask: true   # ENABLED - Linear gradient masking
+  blur_kernel_size: 5       # SMALL transition width
+  sharpening_strength: 0.0  # DISABLED - No sharpening
+  
+processing:
+  batch_size: 2
+  use_ddim: true
+  face_det_batch_size: 16
+  pads: [0, 0, 0, 0]
+  video_fps: 25
+  sample_rate: 16000
+  syncnet_mel_step_size: 16
+
+audio:
+  enhanced_processing: false
+  num_mels: 80
+  n_fft: 800
+  hop_size: 200
+
+optimization:
+  enable_cuda_optimizations: true
+  torch_compile: false
+  memory_cleanup_interval: 2
+  gpu_memory_monitoring: true
+
+paths:
+  input_video: 'test_media/person_short.mp4'
+  input_audio: 'test_media/speech.m4a'
+  output_video: 'output_dir/test_gradient_small_blur.mp4'
+  temp_dir: 'temp'

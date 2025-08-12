@@ -7,12 +7,12 @@
 # =============================================================================
 model:
   checkpoint_path: 'checkpoints/checkpoint.pt'
-  image_size: 128                    # Can be increased to 256 in Phase 2.1
-  num_channels: 128                  # Can be increased to 256 for more capacity
+  image_size: 128                    # Original resolution - compatible with checkpoint
+  num_channels: 128                  # Original channels - compatible with checkpoint
   num_res_blocks: 2
   num_heads: 4
   num_head_channels: 64
-  attention_resolutions: '32,16,8'   # Can be extended to '64,32,16,8' in Phase 1.2
+  attention_resolutions: '32,16,8'   # Original attention resolutions
   use_fp16: true
   learn_sigma: true
 
@@ -21,21 +21,26 @@ model:
 # =============================================================================
 quality:
   # Quality presets - Phase 1.2
-  preset: 'balanced'                 # Options: fast, balanced, high, ultra
+  preset: 'high'                     # Options: fast, balanced, high, ultra
   # fast: ddim10, balanced: ddim25, high: ddim50, ultra: ddim100
   
   # Manual override (optional - preset takes precedence)
   timestep_respacing: 'ddim25'
   
   # Face masking settings
-  face_hide_percentage: 0.5          # Portion of face to regenerate (0.5 = bottom 50%)
+  face_hide_percentage: 0.4          # Portion of face to regenerate (0.5 = bottom 50%)
   
   # Phase 1.1: Enhanced Masking & Blending
   use_gradient_mask: false           # Enable smooth gradient masking instead of hard edges
   blur_kernel_size: 15               # Gaussian blur size for mask smoothing (0 = no blur)
   
+  # Phase 1.4: Circular/Elliptical Masking
+  use_circular_mask: false           # Enable circular/elliptical mask instead of rectangular
+  mask_shape: 'ellipse'              # Options: 'rectangle', 'circle', 'ellipse'
+  ellipse_aspect_ratio: 1.5          # Width/height ratio for elliptical masks (1.0 = circle)
+  
   # Phase 1.3: Post-Processing Sharpening  
-  sharpening_strength: 0.0           # Detail enhancement (0.0 = off, 0.3 = moderate, 1.0 = strong)
+  sharpening_strength: 0.3           # Detail enhancement (0.0 = off, 0.3 = moderate, 1.0 = strong)
   
   # Phase 2.2: Super-Resolution Enhancement
   super_resolution: false            # Apply super-resolution to lip regions
@@ -48,9 +53,9 @@ quality:
 # PROCESSING CONFIGURATION
 # =============================================================================
 processing:
-  batch_size: 4                      # Number of frames processed simultaneously
+  batch_size: 8                      # Optimal batch size for 128x128
   use_ddim: true                     # Use DDIM sampling (faster than full diffusion)
-  face_det_batch_size: 64           # Batch size for face detection
+  face_det_batch_size: 64           # Optimal batch size for face detection
   pads: [0, 0, 0, 0]                # Face crop padding [top, bottom, left, right]
   video_fps: 25                     # Target video frame rate
   sample_rate: 16000                # Audio sampling rate
@@ -98,16 +103,16 @@ post_processing:
 # =============================================================================
 optimization:
   enable_cuda_optimizations: true   # Enable CUDA performance optimizations
-  torch_compile: true               # Use torch.compile for ~1.4x speedup (requires Triton)
-  memory_cleanup_interval: 5        # Cleanup memory every N batches
+  torch_compile: false              # Disabled for stability
+  memory_cleanup_interval: 5        # Standard cleanup interval
   gpu_memory_monitoring: true       # Monitor and report GPU memory usage
 
 # =============================================================================
 # FILE PATHS
 # =============================================================================
 paths:
-  input_video: 'test_media/person.mp4'
-  input_audio: 'test_media/speech.m4a'  
+  input_video: 'test_media/person_short.mp4'
+  input_audio: 'test_media/speech_short.wav'  
   output_video: 'output_dir/result_configurable.mp4'
   temp_dir: 'temp'
 

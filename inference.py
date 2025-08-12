@@ -250,6 +250,11 @@ class ConfigurableDiff2LipProcessor:
         args.temporal_smoothing = quality_config.get('temporal_smoothing', False)
         args.smoothing_factor = quality_config.get('smoothing_factor', 0.3)
         
+        # Phase 1.4: Circular/Elliptical Masking parameters
+        args.use_circular_mask = quality_config.get('use_circular_mask', False)
+        args.mask_shape = quality_config.get('mask_shape', 'ellipse')
+        args.ellipse_aspect_ratio = quality_config.get('ellipse_aspect_ratio', 1.5)
+        
         return args
     
     def _initialize_models(self):
@@ -339,25 +344,7 @@ class ConfigurableDiff2LipProcessor:
         
         return chunk
     
-    def _create_gradient_mask(self, B, H, W, face_hide_percentage, blur_kernel_size=15):
-        """Create gradient mask for smoother blending - Phase 1.1 enhancement"""
-        mask = torch.zeros(B, 1, H, W, device=self.device)
-        mask_start_idx = int(H * (1 - face_hide_percentage))
-        mask[:, :, mask_start_idx:, :] = 1.0
-        
-        # Apply Gaussian blur for smooth transitions
-        if blur_kernel_size > 0:
-            # Convert to numpy for cv2 operations
-            mask_np = mask.cpu().numpy()
-            for b in range(B):
-                mask_np[b, 0] = cv2.GaussianBlur(
-                    mask_np[b, 0], 
-                    (blur_kernel_size, blur_kernel_size), 
-                    0
-                )
-            mask = torch.from_numpy(mask_np).to(self.device)
-        
-        return mask
+
     
     def _enhance_lip_detail(self, generated_face, sharpening_strength=0.3):
         """Apply sharpening for detail enhancement - Phase 1.3 enhancement"""
@@ -439,47 +426,18 @@ class ConfigurableDiff2LipProcessor:
                 return frames_batch, [False] * batch_size
             
             with torch.no_grad():
-                # Process batch with enhanced masking if enabled
-                if self.args.use_gradient_mask:
-                    # Custom processing with gradient mask - Phase 1.1
-                    B, F, C, H, W = batch["image"].shape
-                    img_batch = batch["image"].reshape(B*F, C, H, W).contiguous()
-                    img_batch = (img_batch - 0.5) * 2.0  # Normalize to [-1, 1]
-                    
-                    # Create gradient mask
-                    mask = self._create_gradient_mask(
-                        B*F, H, W, 
-                        self.args.face_hide_percentage,
-                        self.args.blur_kernel_size
-                    )
-                    
-                    # Create conditional image with noise
-                    noise = torch.randn_like(img_batch)
-                    cond_img = img_batch * (1. - mask) + mask * noise
-                    
-                    model_kwargs = {
-                        "cond_img": cond_img,
-                        "mask": mask
-                    }
-                    
-                    # Add reference and audio if enabled
-                    if self.args.use_ref:
-                        ref_batch = batch["ref_img"].reshape(B*F, C, H, W).contiguous()
-                        ref_batch = (ref_batch - 0.5) * 2.0
-                        model_kwargs["ref_img"] = ref_batch
-                    
-                    if self.args.use_audio:
-                        audio_batch_flat = batch["indiv_mels"].reshape(B*F, 1, 80, 16)
-                        model_kwargs["indiv_mels"] = audio_batch_flat
-                    
-                else:
-                    # Standard processing
-                    img_batch, model_kwargs = tfg_process_batch(
-                        batch, 
-                        self.args.face_hide_percentage,
-                        use_ref=self.args.use_ref,
-                        use_audio=self.args.use_audio
-                    )
+                # Use TFG processing with masking enhancements - Phase 1.1 & 1.4
+                img_batch, model_kwargs = tfg_process_batch(
+                    batch, 
+                    self.args.face_hide_percentage,
+                    use_ref=self.args.use_ref,
+                    use_audio=self.args.use_audio,
+                    use_gradient_mask=self.args.use_gradient_mask,
+                    blur_kernel_size=self.args.blur_kernel_size,
+                    use_circular_mask=self.args.use_circular_mask,
+                    mask_shape=self.args.mask_shape,
+                    ellipse_aspect_ratio=self.args.ellipse_aspect_ratio
+                )
                 
                 # Move to device
                 img_batch = img_batch.to(self.device)
