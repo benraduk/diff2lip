@@ -24,10 +24,19 @@ def setup_dist():
     """
     if dist.is_initialized():
         return
+    
+    comm = MPI.COMM_WORLD
+    world_size = comm.size
+    
+    # Skip distributed setup for single process
+    if world_size == 1:
+        print("Single process mode - skipping distributed setup")
+        os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+        return
+        
     print("MPI.COMM_WORLD.Get_rank()", MPI.COMM_WORLD.Get_rank())
     os.environ["CUDA_VISIBLE_DEVICES"] = f"{MPI.COMM_WORLD.Get_rank() % GPUS_PER_NODE}"
     print('os.environ["CUDA_VISIBLE_DEVICES"]', os.environ["CUDA_VISIBLE_DEVICES"])
-    comm = MPI.COMM_WORLD
     backend = "gloo" if not th.cuda.is_available() else "nccl"
 
     if backend == "gloo":

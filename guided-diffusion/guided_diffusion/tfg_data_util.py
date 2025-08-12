@@ -52,7 +52,8 @@ def tfg_add_audio(batch, model_kwargs):
 
 def tfg_add_cond_inputs(img_batch, model_kwargs, face_hide_percentage, noise=None):
     B, C, H, W = img_batch.shape
-    mask = torch.zeros(B,1,H,W)
+    # Ensure mask is on the same device as img_batch
+    mask = torch.zeros(B,1,H,W, device=img_batch.device, dtype=img_batch.dtype)
     mask_start_idx = int (H*(1-face_hide_percentage))
     mask[:,:,mask_start_idx:,:]=1.
     if noise is None:

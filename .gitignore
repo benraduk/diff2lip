@@ -37,3 +37,5 @@ evaluation/test_filelists/lr*.txt
 #evaluation folder
 evaluation/all_comparison/**/*.csv
 evaluation/all_comparison/**/*.txt
+/checkpoints
+/models
