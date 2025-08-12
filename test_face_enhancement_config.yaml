@@ -1,0 +1,116 @@
+# Test Configuration for Face Enhancement Integration
+# Based on inference_config.yaml with face enhancement enabled
+
+# =============================================================================
+# MODEL CONFIGURATION
+# =============================================================================
+model:
+  checkpoint_path: 'checkpoints/checkpoint.pt'
+  image_size: 128
+  num_channels: 128
+  num_res_blocks: 2
+  num_heads: 4
+  num_head_channels: 64
+  attention_resolutions: '32,16,8'
+  use_fp16: true
+  learn_sigma: true
+
+# =============================================================================
+# QUALITY SETTINGS - Testing with balanced preset
+# =============================================================================
+quality:
+  preset: 'balanced'                 # Use balanced for faster testing
+  face_hide_percentage: 0.4
+  use_gradient_mask: false
+  blur_kernel_size: 15
+  use_circular_mask: false
+  mask_shape: 'ellipse'
+  ellipse_aspect_ratio: 1.5
+  sharpening_strength: 0.2           # Moderate sharpening
+  super_resolution: false
+  temporal_smoothing: false
+  smoothing_factor: 0.3
+
+# =============================================================================
+# PROCESSING CONFIGURATION - Smaller batches for testing
+# =============================================================================
+processing:
+  batch_size: 2                      # Smaller batch for testing
+  use_ddim: true
+  face_det_batch_size: 32           # Smaller for testing
+  pads: [0, 0, 0, 0]
+  video_fps: 25
+  sample_rate: 16000
+  syncnet_mel_step_size: 16
+
+# =============================================================================
+# AUDIO CONFIGURATION
+# =============================================================================
+audio:
+  enhanced_processing: false
+  num_mels: 80
+  n_fft: 800
+  hop_size: 200
+  noise_reduction: false
+  dynamic_range_compression: false
+
+# =============================================================================
+# MASKING CONFIGURATION
+# =============================================================================
+masking:
+  use_landmark_masking: false
+  adaptive_masking: false
+  expansion_factor: 1.2
+  mask_blur_strength: 15
+
+# =============================================================================
+# FACE ENHANCEMENT - ENABLED FOR TESTING
+# =============================================================================
+face_enhancement:
+  # Enable face enhancement for testing
+  enabled: true                      # ENABLED for testing
+  
+  # Model selection - start with placeholder
+  model: 'gfpgan_1.4'               # Will use placeholder enhancement initially
+  
+  # Enhancement parameters - conservative settings
+  blend: 60                         # Moderate blending (60%)
+  weight: 0.8                       # Moderate enhancement strength
+  
+  # Processing options
+  apply_timing: 'post_processing'   # Apply after diff2lip generation
+  batch_processing: false           # Process individually for testing
+  
+  # Face detection integration
+  face_selector_mode: 'one'         # Process one face per frame
+  reference_face_distance: 0.6
+  
+  # Masking options
+  mask_blur: 0.1                    # Light mask blur
+  mask_padding: [5, 5, 5, 5]        # Small padding for testing
+
+# =============================================================================
+# POST-PROCESSING
+# =============================================================================
+post_processing:
+  color_correction: false
+  artifact_reduction: false
+  detail_enhancement: false
+
+# =============================================================================
+# OPTIMIZATION - Conservative for testing
+# =============================================================================
+optimization:
+  enable_cuda_optimizations: true
+  torch_compile: false              # Disabled for stability during testing
+  memory_cleanup_interval: 3        # More frequent cleanup
+  gpu_memory_monitoring: true
+
+# =============================================================================
+# FILE PATHS - Test files
+# =============================================================================
+paths:
+  input_video: 'test_media/person_short.mp4'    # Use short video for testing
+  input_audio: 'test_media/speech_short.wav'    # Use short audio for testing
+  output_video: 'output_dir/test_face_enhancement.mp4'  # Test output
+  temp_dir: 'temp'

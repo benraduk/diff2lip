@@ -26,6 +26,7 @@ sys.path.append('./guided-diffusion')
 # Import Diff2Lip components
 from audio import audio
 import face_detection
+from face_enhancer import create_face_enhancer
 
 # Import guided-diffusion components
 try:
@@ -85,8 +86,10 @@ class ConfigurableDiff2LipProcessor:
         self.model = None
         self.diffusion = None
         self.detector = None
+        self.face_enhancer = None
         self.args = self._create_args_from_config()
         self._initialize_models()
+        self._initialize_face_enhancer()
     
     def _load_config(self, config_path):
         """Load configuration from YAML file"""
@@ -153,6 +156,18 @@ class ConfigurableDiff2LipProcessor:
                 'color_correction': False,  # Phase 6.1 enhancement
                 'artifact_reduction': False,  # Phase 6.2 enhancement
                 'detail_enhancement': False
+            },
+            'face_enhancement': {
+                'enabled': False,  # Enable face enhancement post-processing
+                'model': 'gfpgan_1.4',  # Enhancement model
+                'blend': 80,  # Blending ratio (0-100)
+                'weight': 1.0,  # Enhancement strength (0.0-1.0)
+                'apply_timing': 'post_processing',  # When to apply enhancement
+                'batch_processing': True,  # Process frames in batches
+                'face_selector_mode': 'one',  # Face selection mode
+                'reference_face_distance': 0.6,  # Distance threshold
+                'mask_blur': 0.1,  # Mask edge blur
+                'mask_padding': [10, 10, 10, 10]  # Mask padding
             },
             'optimization': {
                 'enable_cuda_optimizations': True,
@@ -302,6 +317,23 @@ class ConfigurableDiff2LipProcessor:
         
         print("✅ Models loaded and optimized successfully!")
     
+    def _initialize_face_enhancer(self):
+        """Initialize face enhancer if enabled"""
+        face_config = self.config.get('face_enhancement', {})
+        
+        if face_config.get('enabled', False):
+            print("🎭 Initializing face enhancer...")
+            try:
+                self.face_enhancer = create_face_enhancer(face_config)
+                print(f"✅ Face enhancer initialized: {face_config.get('model', 'gfpgan_1.4')}")
+            except Exception as e:
+                print(f"⚠️  Face enhancer initialization failed: {e}")
+                print("✅ Continuing without face enhancement")
+                self.face_enhancer = None
+        else:
+            print("🎭 Face enhancement disabled")
+            self.face_enhancer = None
+    
     def _monitor_resources(self):
         """Monitor system resources"""
         process = psutil.Process()
@@ -358,6 +390,24 @@ class ConfigurableDiff2LipProcessor:
             blurred, -sharpening_strength, 0
         )
         return sharpened
+    
+    def _apply_face_enhancement_batch(self, frames_batch):
+        """Apply face enhancement to a batch of frames"""
+        if not self.face_enhancer or not self.face_enhancer.enabled:
+            return frames_batch
+        
+        face_config = self.config.get('face_enhancement', {})
+        if not face_config.get('batch_processing', True):
+            # Process individually
+            return [self.face_enhancer.enhance_face(frame) for frame in frames_batch]
+        
+        try:
+            # Process as batch
+            enhanced_frames = self.face_enhancer.enhance_batch(frames_batch)
+            return enhanced_frames
+        except Exception as e:
+            print(f"⚠️  Batch face enhancement failed: {e}")
+            return frames_batch
     
     def _process_batch(self, frames_batch, audio_chunks_batch):
         """Process a batch of frames with configurable enhancements"""
@@ -477,6 +527,15 @@ class ConfigurableDiff2LipProcessor:
                             generated_face, 
                             self.args.sharpening_strength
                         )
+                    
+                    # Apply face enhancement if enabled
+                    if self.face_enhancer and self.face_enhancer.enabled:
+                        face_config = self.config.get('face_enhancement', {})
+                        if face_config.get('apply_timing', 'post_processing') == 'post_processing':
+                            try:
+                                generated_face = self.face_enhancer.enhance_face(generated_face)
+                            except Exception as e:
+                                print(f"⚠️  Face enhancement failed for frame {orig_idx}: {e}")
                     
                     # Resize and place back
                     generated_face_resized = cv2.resize(generated_face, (x2-x1, y2-y1))

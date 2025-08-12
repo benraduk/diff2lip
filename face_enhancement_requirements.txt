@@ -1,0 +1,14 @@
+# Face Enhancement Dependencies
+# Additional requirements for FaceFusion integration
+
+onnxruntime-gpu>=1.16.0  # For CUDA acceleration
+onnxruntime>=1.16.0      # CPU fallback
+opencv-python>=4.8.0     # Image processing (should already be installed)
+numpy>=1.21.0            # Array operations (should already be installed)
+pillow>=8.0.0            # Image handling
+requests>=2.28.0         # For model downloading (optional)
+tqdm>=4.64.0             # Progress bars (should already be installed)
+
+# Optional dependencies for advanced features
+scipy>=1.9.0             # Scientific computing
+scikit-image>=0.19.0     # Advanced image processing

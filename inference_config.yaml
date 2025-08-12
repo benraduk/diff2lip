@@ -88,6 +88,32 @@ masking:
   mask_blur_strength: 15            # Blur strength for mask edges
 
 # =============================================================================
+# FACE ENHANCEMENT - Phase 1 FaceFusion Integration
+# =============================================================================
+face_enhancement:
+  # Enable/disable face enhancement
+  enabled: false                    # Enable face enhancement post-processing
+  
+  # Model selection
+  model: 'gfpgan_1.4'               # Options: gfpgan_1.4, codeformer, gpen_bfr_512, restoreformer_plus_plus
+  
+  # Enhancement parameters
+  blend: 80                         # Blending ratio (0-100, higher = more enhancement)
+  weight: 1.0                       # Enhancement strength (0.0-1.0)
+  
+  # Processing options
+  apply_timing: 'post_processing'   # When to apply: 'post_processing', 'pre_processing'
+  batch_processing: true            # Process frames in batches for efficiency
+  
+  # Face detection integration
+  face_selector_mode: 'one'         # Options: 'one', 'many', 'reference'
+  reference_face_distance: 0.6      # Distance threshold for reference mode
+  
+  # Masking options
+  mask_blur: 0.1                    # Mask edge blur (0.0-0.5)
+  mask_padding: [10, 10, 10, 10]    # Mask padding [top, right, bottom, left]
+
+# =============================================================================
 # POST-PROCESSING - Phase 6
 # =============================================================================
 post_processing:
